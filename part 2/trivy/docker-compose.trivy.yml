@@ -1,0 +1,101 @@
+# docker-compose.trivy.yml
+# Анализ безопасности образа дашборда с помощью Trivy
+#
+# Запуск:
+#   docker compose -f docker-compose.trivy.yml up --abort-on-container-exit
+#
+# Trivy сканирует:
+#   - Уязвимости OS-пакетов (CVE)
+#   - Уязвимости Python-зависимостей (dash, plotly, pandas, numpy)
+#   - Секреты (API-ключи, токены в коде)
+#   - Неправильные конфигурации Dockerfile
+
+version: "3.9"
+
+services:
+
+  # ── Сам дашборд ─────────────────────────────────────────────────────────────
+  dashboard:
+    build:
+      context: ..
+      dockerfile: Dockerfile
+    container_name: dental_dashboard
+    ports:
+      - "8050:8050"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8050"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - dental_net
+
+  # ── Trivy: сканирование образа ───────────────────────────────────────────────
+  trivy-image:
+    image: aquasec/trivy:latest
+    container_name: trivy_image_scan
+    depends_on:
+      dashboard:
+        condition: service_healthy
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./trivy:/reports
+    command: >
+      image
+      --format table
+      --severity HIGH,CRITICAL
+      --output /reports/trivy_image_report.txt
+      dental_dashboard
+    networks:
+      - dental_net
+
+  # ── Trivy: сканирование файловой системы (зависимости Python) ────────────────
+  trivy-fs:
+    image: aquasec/trivy:latest
+    container_name: trivy_fs_scan
+    volumes:
+      - ..:/workspace:ro
+      - ./trivy:/reports
+    command: >
+      filesystem
+      --format table
+      --severity MEDIUM,HIGH,CRITICAL
+      --output /reports/trivy_fs_report.txt
+      /workspace
+    networks:
+      - dental_net
+
+  # ── Trivy: поиск секретов в коде ────────────────────────────────────────────
+  trivy-secrets:
+    image: aquasec/trivy:latest
+    container_name: trivy_secrets_scan
+    volumes:
+      - ..:/workspace:ro
+      - ./trivy:/reports
+    command: >
+      filesystem
+      --scanners secret
+      --format table
+      --output /reports/trivy_secrets_report.txt
+      /workspace
+    networks:
+      - dental_net
+
+  # ── Trivy: конфигурация Dockerfile ──────────────────────────────────────────
+  trivy-config:
+    image: aquasec/trivy:latest
+    container_name: trivy_config_scan
+    volumes:
+      - ..:/workspace:ro
+      - ./trivy:/reports
+    command: >
+      config
+      --format table
+      --output /reports/trivy_config_report.txt
+      /workspace
+    networks:
+      - dental_net
+
+networks:
+  dental_net:
+    driver: bridge

@@ -1,0 +1,55 @@
+<?xml version='1.0' encoding='utf-8'?>
+<scheme version="2.0" title="Кластеризация — Стоматологическая клиника" description="K-Means, DBSCAN, Агломеративная кластеризация на данных приёмов стоматологической клиники. Открыть виджет File и указать путь к dental_data.csv">
+	<nodes>
+		<node id="0" name="File" qualified_name="Orange.widgets.data.owfile.OWFile" project_name="Orange3" version="" title="File" position="(80.0, 220.0)" />
+		<node id="1" name="Preprocess" qualified_name="Orange.widgets.data.owpreprocess.OWPreprocess" project_name="Orange3" version="" title="Preprocess" position="(240.0, 220.0)" />
+		<node id="2" name="k-Means" qualified_name="Orange.widgets.unsupervised.owkmeans.OWKMeans" project_name="Orange3" version="" title="k-Means" position="(420.0, 100.0)" />
+		<node id="3" name="DBSCAN" qualified_name="Orange.widgets.unsupervised.owdbscan.OWDBSCAN" project_name="Orange3" version="" title="DBSCAN" position="(420.0, 220.0)" />
+		<node id="4" name="Distances" qualified_name="Orange.widgets.unsupervised.owdistances.OWDistances" project_name="Orange3" version="" title="Distances" position="(420.0, 360.0)" />
+		<node id="5" name="Hierarchical Clustering" qualified_name="Orange.widgets.unsupervised.owhierarchicalclustering.OWHierarchicalClustering" project_name="Orange3" version="" title="Hierarchical Clustering" position="(580.0, 360.0)" />
+		<node id="6" name="Scatter Plot" qualified_name="Orange.widgets.visualize.owscatterplot.OWScatterPlot" project_name="Orange3" version="" title="Scatter Plot — k-Means" position="(717.0, 17.0)" />
+		<node id="7" name="Silhouette Plot" qualified_name="Orange.widgets.visualize.owsilhouetteplot.OWSilhouettePlot" project_name="Orange3" version="" title="Silhouette — k-Means" position="(716.0, 108.0)" />
+		<node id="8" name="Scatter Plot" qualified_name="Orange.widgets.visualize.owscatterplot.OWScatterPlot" project_name="Orange3" version="" title="Scatter Plot — DBSCAN" position="(721.0, 225.0)" />
+		<node id="9" name="Data Table" qualified_name="Orange.widgets.data.owtable.OWTable" project_name="Orange3" version="" title="Выбросы DBSCAN" position="(600.0, 280.0)" />
+		<node id="10" name="Scatter Plot" qualified_name="Orange.widgets.visualize.owscatterplot.OWScatterPlot" project_name="Orange3" version="" title="Scatter Plot — Hierarchical" position="(812.0, 319.0)" />
+		<node id="11" name="Box Plot" qualified_name="Orange.widgets.visualize.owboxplot.OWBoxPlot" project_name="Orange3" version="" title="Box Plot — Hierarchical" position="(815.0, 428.0)" />
+	</nodes>
+	<links>
+		<link id="0" source_node_id="0" sink_node_id="1" source_channel="Data" sink_channel="Data" enabled="true" source_channel_id="data" sink_channel_id="data" />
+		<link id="1" source_node_id="1" sink_node_id="2" source_channel="Preprocessed Data" sink_channel="Data" enabled="true" source_channel_id="preprocessed_data" sink_channel_id="data" />
+		<link id="2" source_node_id="1" sink_node_id="3" source_channel="Preprocessed Data" sink_channel="Data" enabled="true" source_channel_id="preprocessed_data" sink_channel_id="data" />
+		<link id="3" source_node_id="1" sink_node_id="4" source_channel="Preprocessed Data" sink_channel="Data" enabled="true" source_channel_id="preprocessed_data" sink_channel_id="data" />
+		<link id="4" source_node_id="4" sink_node_id="5" source_channel="Distances" sink_channel="Distances" enabled="true" source_channel_id="distances" sink_channel_id="distances" />
+		<link id="5" source_node_id="2" sink_node_id="6" source_channel="Data" sink_channel="Data" enabled="true" source_channel_id="annotated_data" sink_channel_id="data" />
+		<link id="6" source_node_id="2" sink_node_id="7" source_channel="Data" sink_channel="Data" enabled="true" source_channel_id="annotated_data" sink_channel_id="data" />
+		<link id="7" source_node_id="3" sink_node_id="8" source_channel="Data" sink_channel="Data" enabled="true" source_channel_id="annotated_data" sink_channel_id="data" />
+		<link id="8" source_node_id="3" sink_node_id="9" source_channel="Data" sink_channel="Data" enabled="true" source_channel_id="annotated_data" sink_channel_id="data" />
+		<link id="9" source_node_id="5" sink_node_id="10" source_channel="Selected Data" sink_channel="Data" enabled="true" source_channel_id="selected_data" sink_channel_id="data" />
+		<link id="10" source_node_id="5" sink_node_id="11" source_channel="Selected Data" sink_channel="Data" enabled="true" source_channel_id="selected_data" sink_channel_id="data" />
+	</links>
+	<annotations>
+		<text id="0" type="text/plain" rect="(40.0, 40.0, 200.0, 50.0)" font-family="Helvetica" font-size="12">Загрузи dental_data.csv через виджет File</text>
+		<text id="1" type="text/plain" rect="(160.0, 280.0, 160.0, 40.0)" font-family="Helvetica" font-size="11">Нормализация Z-score</text>
+		<text id="2" type="text/plain" rect="(340.0, 40.0, 160.0, 40.0)" font-family="Helvetica" font-size="11">k=3, k-means++</text>
+		<text id="3" type="text/plain" rect="(340.0, 170.0, 160.0, 40.0)" font-family="Helvetica" font-size="11">eps=0.5, minPts=5</text>
+		<text id="4" type="text/plain" rect="(340.0, 420.0, 160.0, 40.0)" font-family="Helvetica" font-size="11">Euclidean → Ward</text>
+	</annotations>
+	<thumbnail />
+	<node_properties>
+		<properties node_id="0" format="literal">{'controlAreaVisible': True, 'recent_paths': [], 'recent_urls': [], 'savedWidgetGeometry': None, 'sheet_names': {}, 'source': 0, 'url': '', 'domain_editor': {}, '__version__': 1, 'context_settings': []}</properties>
+		<properties node_id="1" format="literal">{'autocommit': True, 'storedsettings': {'name': '', 'preprocessors': [('normalize', {'method': 2, 'zero_based': True, 'norm_type': 0, 'a': 1.0, 'b': 0.0, 'lower': 0.0, 'upper': 1.0})]}}</properties>
+		<properties node_id="2" format="literal">{'auto_commit': True, 'controlAreaVisible': True, 'k': 3, 'k_from': 2, 'k_to': 8, 'max_iterations': 300, 'n_init': 10, 'normalize': True, 'optimize_k': False, 'savedWidgetGeometry': None, 'selection': None, 'smart_init': True, '__version__': 2}</properties>
+		<properties node_id="3" format="literal">{'auto_commit': True, 'controlAreaVisible': True, 'eps': 0.5, 'metric_idx': 0, 'min_samples': 5, 'normalize': True, 'savedWidgetGeometry': None, '__version__': 1}</properties>
+		<properties node_id="4" format="literal">{'autocommit': True, 'axis': 0, 'controlAreaVisible': True, 'metric_id': 0, 'savedWidgetGeometry': None, '__version__': 4}</properties>
+		<properties node_id="5" format="literal">{'annotation_if_enumerate': 'Enumeration', 'annotation_if_names': 'Name', 'autocommit': True, 'controlAreaVisible': True, 'cut_ratio': 0.5, 'label_only_subset': False, 'linkage': 3, 'max_depth': 10, 'pruning': 0, 'savedWidgetGeometry': None, 'selection_method': 0, 'top_n': 50, 'zoom_factor': 0, '__version__': 2, '__session_state_data': {'version': (0, 0, 0)}, 'context_settings': []}</properties>
+		<properties node_id="6" format="literal">{'attr_x': 'teeth_count', 'attr_y': 'cost', 'auto_send_selection': True, 'auto_sample': True, 'graph': {'alpha_value': 128, 'point_size': 10, 'show_legend': True}, '__version__': 5}</properties>
+		<properties node_id="7" format="literal">{'auto_commit': True, 'bar_size': 5, 'controlAreaVisible': True, 'distance_idx': 0, 'group_by_cluster': True, 'pending_selection': None, 'savedWidgetGeometry': None, '__version__': 2, 'context_settings': []}</properties>
+		<properties node_id="8" format="literal">{'attr_x': 'teeth_count', 'attr_y': 'cost', 'auto_send_selection': True, 'auto_sample': True, 'graph': {'alpha_value': 128, 'point_size': 10, 'show_legend': True}, '__version__': 5}</properties>
+		<properties node_id="9" format="literal">{'auto_commit': True, 'color_by_class': True, 'controlAreaVisible': True, 'savedWidgetGeometry': None, 'select_rows': True, 'show_attribute_labels': True, 'show_distributions': False, 'stored_selection': {'rows': [], 'columns': []}, 'stored_sort': [], '__version__': 1}</properties>
+		<properties node_id="10" format="literal">{'attr_x': 'teeth_count', 'attr_y': 'cost', 'auto_send_selection': True, 'auto_sample': True, 'graph': {'alpha_value': 128, 'point_size': 10, 'show_legend': True}, '__version__': 5}</properties>
+		<properties node_id="11" format="literal">{'auto_commit': True, 'compare': 1, 'stretched': True, 'show_annotations': True, 'group_var': 'Cluster', 'attribute': 'cost', '__version__': 5}</properties>
+	</node_properties>
+	<session_state>
+		<window_groups />
+	</session_state>
+</scheme>
